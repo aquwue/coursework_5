@@ -5,9 +5,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from unit import BaseUnit
 
-# TODO базовый класс скилла
 class Skill(ABC):
-
+    """
+    Базовый класс умения
+    """
     user = None
     target = None
 
@@ -34,6 +35,10 @@ class Skill(ABC):
         return self.user.stamina > self.stamina
 
     def use(self, user: BaseUnit, target: BaseUnit) -> str:
+        """
+        Проверка, достаточно ли выносливости у игрока для применения умения.
+        Для вызова скилла везде используем просто use
+        """
         self.user = user
         self.target = target
         if self._is_stamina_enough:
@@ -49,6 +54,8 @@ class FuryPunch(Skill):
     def skill_effect(self):
         # TODO логика использования скилла -> return str
         # TODO в классе нам доступны экземпляры user и target - можно использовать любые их методы
+        # TODO именно здесь происходит уменшение стамины у игрока применяющего умение и
+        # TODO уменьшение здоровья цели.
         # TODO результат применения возвращаем строкой
         pass
 
