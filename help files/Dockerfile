@@ -1,6 +1,12 @@
 FROM python:3.8.5
 
-WORKDIR /code
+ENV FLASK_APP game.app:app
+
+WORKDIR /opt
+
 COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
+
+
+RUN python -m pip install --upgrade pip && pip install -r requirements.txt
+
+COPY game game

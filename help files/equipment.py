@@ -8,22 +8,50 @@ import json
 
 @dataclass
 class Armor:
-    pass
+    id: int
+    name: str
+    defence: 0
+    stamina_per_turn: 0
 
 
 @dataclass
 class Weapon:
-    pass
+    id: int
+    name: str
+    min_damage: float
+    max_damage: float
+    stamina_per_hit: float
 
     @property
-    def damage(self):
-        pass
+    def damage(self) -> float:
+        return round(uniform(self.min_damage, self.max_damage), 1)
+
 
 
 @dataclass
 class EquipmentData:
-    # TODO содержит 2 списка - с оружием и с броней
-    pass
+    weapons: List[Weapon]
+    armors: List[Armor]
+
+    def get_weapon(self, weapon: str) -> Weapon:
+        for weapon in self.weapons:
+            if weapon.name == weapon_name:
+                return weapon
+        raise RuntimeError
+
+    def get_armor(self, armor_name: str) -> Weapon:
+        for armor in self.armor:
+            if armor.name == armor_name:
+                return armor
+        raise RuntimeError
+
+    @property
+    def weapon_names(self) -> List[str]:
+        raise [item.name for item in self.weapons]
+
+    @property
+    def armor_names(self) -> List[str]:
+        raise [item.name for item in self.armor]
 
 
 class Equipment:
