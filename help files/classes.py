@@ -1,6 +1,11 @@
+from dataclasses import dataclass
+from abc import ABC
+
+import skills as Skill
+
 
 @dataclass
-class UnitClass(Abc):
+class UnitClass(ABC):
     name: str = NotImplemented
     max_health: float = NotImplemented
     max_stamina: float = NotImplemented

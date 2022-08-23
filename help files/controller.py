@@ -1,10 +1,14 @@
+from typing import Optional
+
+# from game.hero import Hero
+from classes import UnitClass
 
 
 class SingletonMeta(type):
 
     _instances = {}
 
-    def __call__(self, *args, **kwargs):
+    def __call__(cls, *args, **kwargs):
 
         if cls not in cls._instances:
             instance = super().__call__(*args, **kwargs)

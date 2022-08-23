@@ -7,6 +7,7 @@ from typing import Optional, Type
 
 BASE_STAMINA_PER_ROUND = 0.4
 
+
 class BaseUnit(ABC):
     """
     Базовый класс юнита
@@ -56,7 +57,7 @@ class BaseUnit(ABC):
         #  если у защищающегося нехватает выносливости - его броня игнорируется
         #  после всех расчетов цель получает урон - target.get_damage(damage)
         #  и возвращаем предполагаемый урон для последующего вывода пользователю в текстовом виде
-        return damage
+        return target.damage
 
     def get_damage(self, damage: int) -> Optional[int]:
         # TODO получение урона целью
@@ -65,13 +66,13 @@ class BaseUnit(ABC):
 
     @property
     def total_armor(self):
-        if sekf.stamina - self.armor.stamina_per_turn >= 0:
+        if self.stamina - self.armor.stamina_per_turn >= 0:
             return self.armor.defence * self.unit_class.armor
         return 0
 
     def hit(self, target: BaseUnit) -> str:
         if self.stamina - self.weapon.stamina_per_hit < 0:
-            return  None
+            return None
 
         hero_damage = self.weapon.damage * self.unit_class.attack
         dealt_damage = hero_damage - target.total_armor
@@ -125,7 +126,7 @@ class PlayerUnit(BaseUnit):
         """
         pass
         # TODO результат функции должен возвращать следующие строки:
-        f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит {damage} урона."
+        f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит {target.damage} урона."
         f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
         f"{self.name} попытался использовать {self.weapon.name}, но у него не хватило выносливости."
 
@@ -142,7 +143,7 @@ class EnemyUnit(BaseUnit):
         функция _count_damage(target
         """
         # TODO результат функции должен возвращать результат функции skill.use или же следующие строки:
-        f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} и наносит Вам {damage} урона."
+        f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} и наносит Вам {target.damage} урона."
         f"{self.name} используя {self.weapon.name} наносит удар, но Ваш(а) {target.armor.name} его останавливает."
         f"{self.name} попытался использовать {self.weapon.name}, но у него не хватило выносливости."
 

@@ -1,4 +1,12 @@
-from flask import Flask, render_template
+from functools import wraps
+from urllib import request
+from controller import Game
+from flask import Flask, render_template, url_for
+from django.shortcuts import redirect
+from equipment import EquipmentData
+from unit import EnemyUnit, PlayerUnit, BaseUnit
+# from base import personage_classes
+from utils import load_equipment
 
 
 app = Flask(__name__)
@@ -76,7 +84,7 @@ def end_fight():
 def choose_hero():
     if request.method == 'GET':
         return render_choose_personage_template(header='Выберете героя', next_button='Выбрать врага')
-    heroes['player'] = Player(
+    heroes['player'] = PlayerUnit(
         unit_class=personage_classes[request.form['unit_class']],
         weapon=EQUIPMENT.get_weapon(request.form['weapon']),
         armor=EQUIPMENT.get_armor(request.form['armor']),
@@ -89,7 +97,7 @@ def choose_hero():
 def choose_enemy():
     if request.method == 'GET':
         return render_choose_personage_template(header='Выберете врага', next_button='Начать сражение')
-    heroes['enemy'] = Player(
+    heroes['enemy'] = PlayerUnit(
         unit_class=personage_classes[request.form['unit_class']],
         weapon=EQUIPMENT.get_weapon(request.form['weapon']),
         armor=EQUIPMENT.get_armor(request.form['armor']),
