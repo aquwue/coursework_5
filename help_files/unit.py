@@ -28,7 +28,7 @@ class BaseUnit(ABC):
     def health_points(self):
         return round(self.hp, 1)
 
-    @hp.setter
+    @health_points.setter
     def health_points(self, value):
         self.hp = value
 
@@ -36,7 +36,7 @@ class BaseUnit(ABC):
     def stamina_points(self):
         return round(self.stamina, 1)
 
-    @stamina.setter
+    @stamina_points.setter
     def stamina_points(self, value):
         self.stamina = value
 
@@ -124,7 +124,9 @@ class PlayerUnit(BaseUnit):
         вызывается функция self._count_damage(target)
         а также возвращается результат в виде строки
         """
-        pass
+
+        return self.hit(target)
+
         # TODO результат функции должен возвращать следующие строки:
         f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит {target.damage} урона."
         f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
@@ -142,6 +144,9 @@ class EnemyUnit(BaseUnit):
         Если умение не применено, противник наносит простой удар, где также используется
         функция _count_damage(target
         """
+        if randint(0, 100) < 10 and self.stamina >= self.unit_class.stamina and not self._is_skill_used:
+            ...
+        return self.hit(target)
         # TODO результат функции должен возвращать результат функции skill.use или же следующие строки:
         f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} и наносит Вам {target.damage} урона."
         f"{self.name} используя {self.weapon.name} наносит удар, но Ваш(а) {target.armor.name} его останавливает."

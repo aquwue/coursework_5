@@ -5,8 +5,8 @@ import marshmallow_dataclass
 
 from equipment import EquipmentData
 
-BASE_DIR: str = os.path.abspath(os.path.dirname(__file))
-EQUIPMENT_PATH: str = os.join(BASE_DIR, 'data', 'equipment.json')
+BASE_DIR: str = os.path.abspath(os.path.dirname(__file__))
+EQUIPMENT_PATH: str = os.path.join(BASE_DIR, 'data', 'equipment.json')
 
 
 def read_json(file_path: str, encoding: str = 'utf-8') -> Union[dict, list]:
@@ -15,6 +15,7 @@ def read_json(file_path: str, encoding: str = 'utf-8') -> Union[dict, list]:
             return json.load(f)
     except Exception:
         raise
+
 
 def load_equipment() -> EquipmentData:
     try:

@@ -10,8 +10,8 @@ import json
 class Armor:
     id: int
     name: str
-    defence: 0
-    stamina_per_turn: 0
+    defence: float
+    stamina_per_turn: float
 
 
 @dataclass
@@ -33,14 +33,14 @@ class EquipmentData:
     weapons: List[Weapon]
     armors: List[Armor]
 
-    def get_weapon(self, weapon: str) -> Weapon:
+    def get_weapon(self, weapon_name: str) -> Weapon:
         for weapon in self.weapons:
             if weapon.name == weapon_name:
                 return weapon
         raise RuntimeError
 
-    def get_armor(self, armor_name: str) -> Weapon:
-        for armor in self.armor:
+    def get_armor(self, armor_name: str) -> Armor:
+        for armor in self.armors:
             if armor.name == armor_name:
                 return armor
         raise RuntimeError

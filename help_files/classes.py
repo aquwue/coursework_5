@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC
 
-import skills as Skill
+from skills import Skill, ferocious_kick, powerful_thrust
 
 
 @dataclass

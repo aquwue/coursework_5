@@ -1,23 +1,23 @@
 from functools import wraps
-from urllib import request
+
 from controller import Game
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 from django.shortcuts import redirect
 from equipment import EquipmentData
 from unit import EnemyUnit, PlayerUnit, BaseUnit
-# from base import personage_classes
+from classes import unit_classes
 from utils import load_equipment
 
 
 app = Flask(__name__)
-app.irl_map.strict_slashes = False
+app.url_map.strict_slashes = False
 
 heroes = {
     "player": BaseUnit,
     "enemy": BaseUnit
 }
 
-EQUIPMENT = load_equipment()
+EQUIPMENT: EquipmentData = load_equipment()
 
 arena =  ... # TODO инициализируем класс арены
 
@@ -39,7 +39,7 @@ def game_processing(func):
 def render_choose_personage_template(*args, **kwargs) -> str:
     return render_template(
         'hero_choosing.html',
-        classes=personage_classes.values(),
+        classes=unit_classes.values(),
         equipment=EQUIPMENT,
         **kwargs,
     )
@@ -53,7 +53,7 @@ def menu_page():
 @app.route("/fight/")
 def start_fight():
     if 'player' in heroes and 'enemy' in heroes:
-        game.run(**heroes )
+        game.run(**heroes)
         return render_template('fight.html', heroes=heroes, result='Fight')
     return redirect(url_for('index'))
 
@@ -85,7 +85,7 @@ def choose_hero():
     if request.method == 'GET':
         return render_choose_personage_template(header='Выберете героя', next_button='Выбрать врага')
     heroes['player'] = PlayerUnit(
-        unit_class=personage_classes[request.form['unit_class']],
+        unit_class=unit_classes[request.form['unit_class']],
         weapon=EQUIPMENT.get_weapon(request.form['weapon']),
         armor=EQUIPMENT.get_armor(request.form['armor']),
         name=request.form['name']
@@ -97,13 +97,13 @@ def choose_hero():
 def choose_enemy():
     if request.method == 'GET':
         return render_choose_personage_template(header='Выберете врага', next_button='Начать сражение')
-    heroes['enemy'] = PlayerUnit(
-        unit_class=personage_classes[request.form['unit_class']],
+    heroes['enemy'] = EnemyUnit(
+        unit_class=unit_classes[request.form['unit_class']],
         weapon=EQUIPMENT.get_weapon(request.form['weapon']),
         armor=EQUIPMENT.get_armor(request.form['armor']),
         name=request.form['name']
     )
-    return 'Not implemented'
+    return redirect(url_for('start_fight'))
 
 
 if __name__ == "__main__":
